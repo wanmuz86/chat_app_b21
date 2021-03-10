@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -6,6 +7,11 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+
+    FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,13 +24,25 @@ class _RegisterPageState extends State<RegisterPage> {
               decoration: InputDecoration(
                   hintText: "Enter your email"
               ),
+              controller: emailController,
             ),
             TextField(
               decoration: InputDecoration(
                   hintText: "Enter your password"
               ),
+              controller: passwordController,
             ),
-            FlatButton(onPressed: (){
+            FlatButton(onPressed: () async {
+
+              User user = (await _auth.createUserWithEmailAndPassword(email: emailController.text,
+                  password: passwordController.text)).user;
+
+              if (user != null){
+                print("Succefully logged in");
+              }
+              else {
+                print("Something is wrong");
+              }
 
             }, child: Text("Register"), color: Colors.yellow,),
 
