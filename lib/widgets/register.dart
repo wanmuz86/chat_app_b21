@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -33,12 +35,20 @@ class _RegisterPageState extends State<RegisterPage> {
               controller: passwordController,
             ),
             FlatButton(onPressed: () async {
-
+              print("inside button pressed");
               User user = (await _auth.createUserWithEmailAndPassword(email: emailController.text,
                   password: passwordController.text)).user;
 
               if (user != null){
+                print("ok!");
                 print("Succefully logged in");
+                FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+                  'email':user.email,
+                  'id':user.uid,
+                  'createdAt':DateTime.now(),
+                  'chattingWith':null
+
+                });
               }
               else {
                 print("Something is wrong");

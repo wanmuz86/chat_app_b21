@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EmployeelistPage()));
+                            builder: (context) => EmployeelistPage(userId: user.uid, userEmail:user.email)));
                   } else {
                     print("error");
                   }
